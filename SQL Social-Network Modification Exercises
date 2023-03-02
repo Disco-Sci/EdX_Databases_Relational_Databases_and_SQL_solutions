@@ -16,29 +16,23 @@ Question #: 2
 Problem: If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple.
 Solution:
 
-Incomplete
-
 Script:
 delete from likes
-where ID1 || ID2 in 
-	(select ID1 || ID2
-	 from (
-		 select f.ID1, f.ID2
-		 from friend f
-		 where f.ID1 in (
-			select ID1
-			from likes) and
-		 f.ID1 || f.ID2 not in (
-			select li_1.ID1 || li_1.ID2
-			from likes li_1, highschooler hs_1, highschooler hs_2, likes li_2
-			where li_1.ID1 = hs_1.ID
-			and li_1.ID2 = hs_2.ID 
-			and hs_2.ID = li_2.ID1
-			and hs_1.ID = li_2.ID2
-			and hs_1.name < hs_2.name
-			order by hs_1.name, hs_2.name)
-		 )
-	 )
+where ID1 || ID2 in (
+	select (L1.ID1 || L1.ID2)
+	from friend, likes L1
+	where 
+		(friend.ID1 = L1.ID1 and friend.ID2 = L1.ID2) and 
+		(L1.ID1 || L1.ID2) not in (
+			select (L1.ID1 || L1.ID2)
+			from friend, likes L1, likes L2
+			where 
+				(friend.ID1 = L1.ID1 and friend.ID2 = L1.ID2) and
+				L1.ID1 = L2.ID2 and
+				L1.ID2 = L2.ID1
+			)
+	)
+;
 
 */
 

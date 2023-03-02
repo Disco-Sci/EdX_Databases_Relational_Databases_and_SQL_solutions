@@ -37,11 +37,13 @@ where ID1 || ID2 in (
 */
 
 /*
-Question #:
-Problem:
+Question #: 3
+Problem: For all cases where A is friends with B, and B is friends with C, add a new friendship for the pair A and C. Do not add duplicate friendships, friendships that already exist, or friendships with oneself. (This one is a bit challenging; congratulations if you get it right.)
 Solution:
 
 Script:
+
+
 */
 
 /*

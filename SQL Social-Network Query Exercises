@@ -136,6 +136,7 @@ Question: 6
 Problem: Find names and grades of students who only have friends in the same grade. Return the result sorted by grade, then by name within each grade.
 Solution: 
 
+Incomplete
 
 */
 
@@ -143,6 +144,8 @@ Solution:
 Question: 7
 Problem: 
 Solution: 
+
+Incomplete
 
 select *
 from likes
@@ -154,11 +157,23 @@ where ID1 in (
 		likes.ID1 = f1.ID1 and
 		likes.ID2 != f1.ID2
 	) 
+*/
 
+/*
+Question: 8
+Problem: Find the difference between the number of students in the school and the number of different first names.
+Solution: 
 
-	
-	
-	
+select count(hs.ID) - count(distinct hs.name)
+from highschooler hs
+
+Incomplete
+
+*/
+Question: 9
+Problem: 
+Solution: 
+/*
 
 */
 

@@ -136,7 +136,24 @@ Question: 6
 Problem: Find names and grades of students who only have friends in the same grade. Return the result sorted by grade, then by name within each grade.
 Solution: 
 
-Incomplete
+script:
+select distinct name, grade
+from (
+	select ID1 series
+	from friend
+	where ID1 not in (
+			select hs1.ID
+			from ( 
+				select f1.id1 F1_ID1, f1.id2 F1_ID2, f2.id1 F2_ID1, f2.id2 F2_ID2
+				from friend f1 inner join friend f2 on (f1.id1 = f2.id1 and f1.id2 = f2.id2)
+				) test
+			inner join highschooler hs1 on test.F1_ID1 = hs1.ID
+			inner join highschooler hs2 on test.F1_ID2 = hs2.ID
+			where hs1.grade != hs2.grade)
+) tbl
+inner join highschooler hs1 on hs1.id = tbl.Series
+order by grade, name
+
 
 */
 

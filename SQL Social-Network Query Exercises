@@ -140,8 +140,25 @@ Solution:
 */
 
 /*
-Question: 
+Question: 7
 Problem: 
 Solution: 
+
+select *
+from likes
+where ID1 in (
+-- provides a list of Likes.ID1's who are not friends with who they like
+	select likes.ID1
+	from likes, friend f1
+	where 
+		likes.ID1 = f1.ID1 and
+		likes.ID2 != f1.ID2
+	) 
+
+
+	
+	
+	
+
 */
 

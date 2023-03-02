@@ -1,0 +1,67 @@
+/*
+Question #: 1
+Problem: It's time for the seniors to graduate. Remove all 12th graders from Highschooler.
+Solution:
+
+Script:
+delete from highschooler 
+where ID in (
+	select ID 
+	from highschooler 
+	where grade =12)
+*/
+
+/*
+Question #: 2
+Problem: If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple.
+Solution:
+
+Incomplete
+
+Script:
+delete from likes
+where ID1 || ID2 in 
+	(select ID1 || ID2
+	 from (
+		 select f.ID1, f.ID2
+		 from friend f
+		 where f.ID1 in (
+			select ID1
+			from likes) and
+		 f.ID1 || f.ID2 not in (
+			select li_1.ID1 || li_1.ID2
+			from likes li_1, highschooler hs_1, highschooler hs_2, likes li_2
+			where li_1.ID1 = hs_1.ID
+			and li_1.ID2 = hs_2.ID 
+			and hs_2.ID = li_2.ID1
+			and hs_1.ID = li_2.ID2
+			and hs_1.name < hs_2.name
+			order by hs_1.name, hs_2.name)
+		 )
+	 )
+
+*/
+
+/*
+Question #:
+Problem:
+Solution:
+
+Script:
+*/
+
+/*
+Question #:
+Problem:
+Solution:
+
+Script:
+*/
+
+/*
+Question #:
+Problem:
+Solution:
+
+Script:
+*/

@@ -145,18 +145,34 @@ Question: 7
 Problem: 
 Solution: 
 
-Incomplete
+An insane answer needs to be refactored but it works
 
-select *
-from likes
-where ID1 in (
--- provides a list of Likes.ID1's who are not friends with who they like
-	select likes.ID1
-	from likes, friend f1
+select distinct hs1.name, hs1.grade, hs2.name, hs2.grade, hs3.name, hs3.grade
+from (
+	select *
+	from (
+		select FL.L1_ID1 L1_ID1, FL.L1_ID2 L1_ID2, F1.ID1 F1_ID1, F1.ID2 F1_ID2
+		from (
+			select likes.ID1 L1_ID1, likes.ID2 L1_ID2
+			from likes
+			where 
+				(likes.ID1 || likes.ID2) not in (
+				select (F1.ID1 || F1.ID2)
+				from friend F1) 
+		) FL, friend F1
+		where 
+			(FL.L1_ID1 = f1.ID1 and FL.L1_ID2 != f1.ID2)
+   		) part1, friend F2
 	where 
-		likes.ID1 = f1.ID1 and
-		likes.ID2 != f1.ID2
-	) 
+		part1.F1_ID2 = F2.ID1 and
+	    part1.L1_ID2 = F2.ID2		
+	) part2, highschooler hs1, highschooler hs2, highschooler hs3
+where 
+	part2.L1_ID1 = hs1.ID and
+    part2.L1_ID2 = hs2.ID and
+    part2.F1_ID2 = hs3.ID
+order by hs1.name, hs2.name, hs3.name
+;
 */
 
 /*

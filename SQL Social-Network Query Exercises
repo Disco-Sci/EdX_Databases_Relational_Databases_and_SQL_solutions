@@ -171,9 +171,20 @@ Incomplete
 
 */
 Question: 9
-Problem: 
+Problem: Find the name and grade of all students who are liked by more than one other student.
 Solution: 
-/*
+
+Script:
+select hs.name, hs.grade
+from (
+	select ID2, count(ID2) total
+	from likes
+	group by ID2
+	having total > 1
+	) temp_tbl
+join highschooler hs on hs.ID = temp_tbl.ID2
+
+
 
 */
 

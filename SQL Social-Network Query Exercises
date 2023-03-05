@@ -3,12 +3,6 @@ Question: 1
 Problem: Find the names of all students who are friends with someone named Gabriel.
 Solution: 
 
-My strategy is to identify each ID within the relation/table 'friend' with it's correct name
-The key used is highschooler ID
-Making the cross product between all three relations I then filter match on key-value pairs
-Lastly, the name associated with friend ID2 must be 'Gabriel'
-From the resulting relation I select the name associated with friend - ID1
-
 select hsID1.name
 from friend, highschooler hsID1, highschooler hsID2
 where friend.ID1 = hsID1.ID
@@ -48,20 +42,6 @@ Question: 3
 Problem: For every pair of students who both like each other, return the name and grade of both students. Include each pair only once, with the two names in alphabetical order.
 Solution: 
 
-Select clause: 
-ID1 name, ID1 grade, ID2 name, ID2 grade
-
-From clause:
-Cross product of like and highschooler relation/tables
-
-Where clause:
-Filter matching where 'likes' relation/tables attributes ID1 and ID2 are correlated to highschooler info
-Filter matching where the inverse ID's are matching
-Lastly where the ID1 name is seq. lower than ID2 name
-
-Order by clause:
-ID1 name, ID2 name
-
 select hs_1.name, hs_1.grade, hs_2.name, hs_2.grade
 from likes li_1, highschooler hs_1, highschooler hs_2, likes li_2
 where li_1.ID1 = hs_1.ID
@@ -78,20 +58,6 @@ Question: 4
 Problem: Find all students who do not appear in the Likes table (as a student who likes or is liked) and return their names and grades. Sort by grade, then by name within each grade.
 Solution: 
 
-Select clause:
-Return name and grade
-
-From clause:
-Highschooler relation/table
-
-Where clause:
-ID values that were in either likes.ID1 or likes.ID2
-
-Order by: 
-  Grade 
-  Name
-
-Script:
 
 select name, grade
 from highschooler
@@ -110,17 +76,6 @@ Question: 5
 Problem: For every situation where student A likes student B, but we have no information about whom B likes (that is, B does not appear as an ID1 in the Likes table), return A and B's names and grades.
 Solution: 
 
-Select clause: 
-Return ID1 name, ID1 grade, ID2 name, ID2 grade
-
-From clause:
-Cross product of three relations/tables
-Match filtering 'likes' table attribute ID1 and ID2 to highschooler ID 
-The result should be a relation that has corresponding info from highschooler for ID1 and ID2
-
-Where clause:
-A filter where tuples returned will have values of likes.ID2 that are not in likes.ID1
-
 select hs_1.name, hs_1.grade, hs_2.name, hs_2.grade
 from likes
 join highschooler hs_1 on likes.ID1 = hs_1.ID
@@ -136,23 +91,20 @@ Question: 6
 Problem: Find names and grades of students who only have friends in the same grade. Return the result sorted by grade, then by name within each grade.
 Solution: 
 
-script:
-select distinct name, grade
-from (
-	select ID1 series
-	from friend
-	where ID1 not in (
-			select hs1.ID
-			from ( 
-				select f1.id1 F1_ID1, f1.id2 F1_ID2, f2.id1 F2_ID1, f2.id2 F2_ID2
-				from friend f1 inner join friend f2 on (f1.id1 = f2.id1 and f1.id2 = f2.id2)
-				) test
-			inner join highschooler hs1 on test.F1_ID1 = hs1.ID
-			inner join highschooler hs2 on test.F1_ID2 = hs2.ID
-			where hs1.grade != hs2.grade)
-) tbl
-inner join highschooler hs1 on hs1.id = tbl.Series
-order by grade, name
+
+select distinct hs1.name, hs1.grade
+from friend f1, highschooler hs1, highschooler hs2
+where
+    f1.id1 = hs1.id and
+    f1.id2 = hs2.id and 
+    f1.id1 not in (
+		select distinct f1.id1
+		from friend f1, highschooler hs1, highschooler hs2
+		where 
+			f1.id1 = hs1.id and
+			f1.id2 = hs2.id and 
+			hs1.grade != hs2.grade )
+order by hs1.grade, hs1.name
 
 
 */
